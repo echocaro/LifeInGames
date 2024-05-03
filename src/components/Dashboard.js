@@ -5,29 +5,23 @@ import { useSearchParams } from "react-router-dom";
 const Dashboard = () => {
   const [searchParams] = useSearchParams();
   const code = searchParams.get("code");
-  console.log("code", code);
+
+  const fetchToken = async () => {
+    try {
+      const response = await axios
+        .post("http://localhost:8080/token", {
+          code: code,
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
+      console.log("response: ", response);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   useEffect(() => {
-    const fetchToken = async () => {
-      try {
-        const response = axios
-          .get("http://localhost:8080/token", {
-            params: {
-              code: code,
-            },
-          })
-          .then(function (res) {
-            console.log(res);
-          })
-          .catch(function (err) {
-            console.log(err);
-          });
-        console.log("RESPONSE: ", response);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-
     fetchToken();
   }, []);
 
