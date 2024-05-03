@@ -19,7 +19,7 @@ func main() {
 		MaxAge:           12 * time.Hour, // Preflight request cache duration
 	}))
 
-	router.GET("/api", auth.SignInRoute)
+	// router.GET("/api", auth.SignInRoute)
 	router.GET("/token", auth.Token)
 
 	router.Run(":8080")

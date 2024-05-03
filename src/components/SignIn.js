@@ -1,31 +1,15 @@
-import axios from "axios";
 import React from "react";
+import { Link } from "react-router-dom";
 
 const SignIn = () => {
-  const fetchData = async () => {
-    try {
-      const response = axios
-        .get("http://localhost:8080/api", {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-        .then(function (res) {
-          console.log(res);
-        })
-        .catch(function (err) {
-          console.log(err);
-        });
-      console.log("RESPONSE: ", response);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   return (
     <div>
       <h3>Hello</h3>
-      <button onClick={fetchData}>Join with twitch</button>
+      <Link
+        to={`https://id.twitch.tv/oauth2/authorize?response_type=code&client_id=${process.env.REACT_APP_TWITCH_API}&redirect_uri=http://localhost:3000/home&scope=user_read`}
+      >
+        <button>Join with twitch</button>
+      </Link>
     </div>
   );
 };

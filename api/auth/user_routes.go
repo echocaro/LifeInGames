@@ -10,21 +10,6 @@ import (
 	"github.com/joho/godotenv"
 )
 
-func SignInRoute(c *gin.Context) {
-	if err := godotenv.Load(); err != nil {
-		log.Fatalf("Error loading .env file: %s", err)
-	}
-
-	// https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/#authorization-code-grant-flow
-	twitchAuthUrl := "https://id.twitch.tv/oauth2/authorize"
-	twitchRedirectURI := "http://localhost:3000/home" // temp. not sure i like this
-	twitchClientId := os.Getenv("TWITCH_API")         // need to get this
-
-	authUrl := twitchAuthUrl + "?response_type=code&client_id=" + twitchClientId + "&redirect_uri=" + twitchRedirectURI + "&scope=user_read"
-
-	c.Redirect(http.StatusFound, authUrl)
-}
-
 func Token(c *gin.Context) {
 	if err := godotenv.Load(); err != nil {
 		log.Fatalf("Error loading .env file: %s", err)
