@@ -20,7 +20,7 @@ func main() {
 	}))
 
 	// router.GET("/api", auth.SignInRoute)
-	router.GET("/token", auth.Token)
+	router.POST("/token", auth.Token)
 
 	router.Run(":8080")
 }
