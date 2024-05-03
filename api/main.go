@@ -2,6 +2,7 @@ package main
 
 import (
 	"api/auth"
+	"api/endpoints"
 	"time"
 
 	"github.com/gin-contrib/cors"
@@ -14,12 +15,12 @@ func main() {
 	router.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"http://localhost:3000"},
 		AllowMethods:     []string{"GET", "POST", "OPTIONS"},
-		AllowHeaders:     []string{"Content-Type", "Access-Control-Allow-Origin", "Access-Control-Allow-Headers"},
+		AllowHeaders:     []string{"Content-Type", "Access-Control-Allow-Origin", "Access-Control-Allow-Headers", "Authorization"},
 		AllowCredentials: true,
 		MaxAge:           12 * time.Hour, // Preflight request cache duration
 	}))
 
-	// router.GET("/api", auth.SignInRoute)
+	router.GET("/games", endpoints.TopGames)
 	router.POST("/token", auth.Token)
 
 	router.Run(":8080")
