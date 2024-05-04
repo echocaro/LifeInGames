@@ -16,7 +16,7 @@ func main() {
 		AllowMethods:     []string{"GET", "POST", "OPTIONS"},
 		AllowHeaders:     []string{"Content-Type", "Access-Control-Allow-Origin", "Access-Control-Allow-Headers", "Authorization"},
 		AllowCredentials: true,
-		MaxAge:           12 * time.Hour, // Preflight request cache duration
+		MaxAge:           12 * time.Hour,
 	}))
 
 	router.GET("/:steamId/games", endpoints.OwnedGames)
