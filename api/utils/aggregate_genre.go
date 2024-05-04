@@ -46,29 +46,34 @@ func FetchGenreData(game GameInfo) ([]GenreInfo, error) {
 func CalcTopGenres(genresList []TopGenreGameInfo) [] string {
 	genreCount := make(map[string]int)
 
-	for _, gameGenre := range genresList {
-		for _, genre := range gameGenre.Genre {
-			genreCount[genre.Name]++
-		}
-	}
+    for _, gameGenre := range genresList {
+        for _, genre := range gameGenre.Genre {
+            genreCount[genre.Name]++
+        }
+    }
 
-	type genreCountPair struct {
-		Genre string
-		Count int
-	}
-	var counts []genreCountPair
-	for genre, count := range genreCount {
-		counts = append(counts, genreCountPair{Genre: genre, Count: count})
-	}
+    type genreCountPair struct {
+        Genre string
+        Count int
+    }
+    var counts []genreCountPair
+    for genre, count := range genreCount {
+        counts = append(counts, genreCountPair{Genre: genre, Count: count})
+    }
 
-	sort.Slice(counts, func(i, j int) bool {
-		return counts[i].Count > counts[j].Count
-	})
+    sort.Slice(counts, func(i, j int) bool {
+        return counts[i].Count > counts[j].Count
+    })
 
-	topGenres := make([]string, 0, 3)
-	for i := 0; i < 3 && i < len(counts); i++ {
-		topGenres = append(topGenres, counts[i].Genre)
-	}
+    topGenres := make([]string, 0, 5)
+    existingGenres := make(map[string]bool)
 
-	return topGenres
+    for _, count := range counts {
+        if !existingGenres[count.Genre] && len(topGenres) < 5 {
+            topGenres = append(topGenres, count.Genre)
+            existingGenres[count.Genre] = true
+        }
+    }
+
+    return topGenres
 }

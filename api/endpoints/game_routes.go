@@ -68,7 +68,7 @@ func GamePlayData(c *gin.Context) {
 
 func GetTopGames(c *gin.Context) {
 	ownedGames := externalapi.FetchOwnedGames(c)
-	topGames := utils.TopFiveGames(ownedGames)
+	topGames := utils.TopSixGames(ownedGames)
 
 	c.JSON(http.StatusOK, topGames)
 }
@@ -77,7 +77,7 @@ func GetTopGenres(c *gin.Context) {
 	var games []utils.TopGenreGameInfo
 	var topGenres []string
 	ownedGames := externalapi.FetchOwnedGames(c)
-	topGames := utils.TopFiveGames(ownedGames)
+	topGames := utils.TopSixGames(ownedGames)
 
 	if ownedGames == nil {
 		c.String(http.StatusInternalServerError, "Could not find games")
