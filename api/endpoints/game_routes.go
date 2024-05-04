@@ -22,6 +22,7 @@ func OwnedGames(c *gin.Context) {
 
 func GamePlayData(c *gin.Context) {
 	ownedGames := externalapi.FetchOwnedGames(c)
+	maxCount := 3
 	var gameDataList []utils.GameData
 	var gameData utils.GameData
 	var gameList []utils.GameData
@@ -54,9 +55,11 @@ func GamePlayData(c *gin.Context) {
 		gameDataList = append(gameDataList, gameData)
 	}
 
+	count := 0
 	for _, game := range gameDataList {
-		if game.Message != "" {
+		if game.Message != "" && count < maxCount {
 			gameList = append(gameList, game)
+			count++
 		}
 	}
 
