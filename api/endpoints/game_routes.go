@@ -19,6 +19,12 @@ type GameInfo struct {
 	ImageURL string
 }
 
+type GameData struct {
+	Name string `json:"name"`
+	ImageUrl string
+	Message string
+}
+
 func OwnedGames(c *gin.Context) {
 	ownedGames := fetchOwnedGames(c)
 
@@ -28,6 +34,38 @@ func OwnedGames(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, ownedGames)
+}
+
+func GamePlayData(c *gin.Context) {
+	ownedGames := fetchOwnedGames(c)
+	var gameDataList []GameData
+
+	if ownedGames == nil {
+		c.String(http.StatusInternalServerError, "Could not find games")
+		return
+	}
+
+	for _, game := range ownedGames {
+		var message string
+
+		if game.Playtime > 0 {
+			days := game.Playtime / 1440
+
+			if days > 0 {
+				message = fmt.Sprintf("You have played %s for a total of %d days", game.Name, days)
+			}
+		}
+
+		gameData := GameData{
+			Name: game.Name,
+			ImageUrl: game.ImageURL,
+			Message: message,
+		}
+
+		gameDataList = append(gameDataList, gameData)
+	}
+
+	c.JSON(http.StatusOK, gameDataList)
 }
 
 
@@ -64,8 +102,6 @@ func fetchOwnedGames(c *gin.Context) []GameInfo {
 		c.String(http.StatusInternalServerError, "Failed to read response body")
 		return nil
 	}
-
-	log.Println("Body: ", string(body))
 
 	var gamesResponse struct {
 		Response struct {
