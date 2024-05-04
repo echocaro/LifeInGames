@@ -61,6 +61,7 @@ func GetTopGames(c *gin.Context) {
 
 func GetTopGenres(c *gin.Context) {
 	var games []utils.TopGenreGameInfo
+	var topGenres []string
 	ownedGames := externalapi.FetchOwnedGames(c)
 	topGames := utils.TopFiveGames(ownedGames)
 
@@ -88,7 +89,9 @@ func GetTopGenres(c *gin.Context) {
 		}
 
 		games = append(games, game)
+
+		topGenres = utils.CalcTopGenres(games)
 	}
 
-	c.JSON(http.StatusOK, games)
+	c.JSON(http.StatusOK, topGenres)
 }
