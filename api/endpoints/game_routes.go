@@ -20,6 +20,18 @@ type GameInfo struct {
 }
 
 func OwnedGames(c *gin.Context) {
+	ownedGames := fetchOwnedGames(c)
+
+	if ownedGames == nil {
+		c.String(http.StatusInternalServerError, "Could not find games")
+		return
+	}
+
+	c.JSON(http.StatusOK, ownedGames)
+}
+
+
+func fetchOwnedGames(c *gin.Context) []GameInfo {
 	if err := godotenv.Load(); err != nil {
 		log.Fatalf("Error loading .env file: %s", err)
 	}
@@ -30,7 +42,7 @@ func OwnedGames(c *gin.Context) {
 	if steamAPIKey == "" {
 		log.Println("Steam API key not found")
 		c.String(http.StatusInternalServerError, "Steam API key not found")
-		return
+		return nil
 	}
 
 	url := fmt.Sprintf("https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key=%s&steamid=%s&include_appinfo=1", steamAPIKey, steamID)
@@ -40,7 +52,7 @@ func OwnedGames(c *gin.Context) {
 	if err != nil {
 		log.Printf("Failed to make request: %v", err)
 		c.String(http.StatusInternalServerError, "Failed to make request to Steam Web API")
-		return
+		return nil
 	}
 
 	defer response.Body.Close()
@@ -50,7 +62,7 @@ func OwnedGames(c *gin.Context) {
 	if err != nil {
 		log.Printf("Failed to read response body: %v", err)
 		c.String(http.StatusInternalServerError, "Failed to read response body")
-		return
+		return nil
 	}
 
 	log.Println("Body: ", string(body))
@@ -64,12 +76,12 @@ func OwnedGames(c *gin.Context) {
 	if err := json.Unmarshal(body, &gamesResponse); err != nil {
 		log.Printf("Failed to parse JSON response: %v", err)
 		c.String(http.StatusInternalServerError, "Failed to parse JSON response")
-		return
+		return nil
 	}
 
 	for i := range gamesResponse.Response.Games {
     gamesResponse.Response.Games[i].ImageURL = fmt.Sprintf("https://cdn.akamai.steamstatic.com/steam/apps/%d/header.jpg", gamesResponse.Response.Games[i].AppID)
 	}
 
-	c.JSON(http.StatusOK, gamesResponse.Response.Games)
+	return gamesResponse.Response.Games
 }
