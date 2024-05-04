@@ -23,6 +23,8 @@ func OwnedGames(c *gin.Context) {
 func GamePlayData(c *gin.Context) {
 	ownedGames := externalapi.FetchOwnedGames(c)
 	var gameDataList []utils.GameData
+	var gameData utils.GameData
+	var gameList []utils.GameData
 
 	if ownedGames == nil {
 		c.String(http.StatusInternalServerError, "Could not find games")
@@ -40,7 +42,7 @@ func GamePlayData(c *gin.Context) {
 			}
 		}
 
-		gameData := utils.GameData{
+		gameData = utils.GameData{
 			Name: game.Name,
 			ImageUrl: game.ImageURL,
 			Message: message,
@@ -49,7 +51,13 @@ func GamePlayData(c *gin.Context) {
 		gameDataList = append(gameDataList, gameData)
 	}
 
-	c.JSON(http.StatusOK, gameDataList)
+	for _, game := range gameDataList {
+		if game.Message != "" {
+			gameList = append(gameList, game)
+		}
+	}
+
+	c.JSON(http.StatusOK, gameList)
 }
 
 func GetTopGames(c *gin.Context) {
