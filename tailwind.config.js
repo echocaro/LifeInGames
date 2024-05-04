@@ -4,9 +4,11 @@ module.exports = {
   theme: {
     colors: {
       pink: "#FF5964",
-      blue: "#7B8CDE",
+      purple: "#9893DA",
       yellow: "#F9DB6D",
       white: "#cad3f5",
+      green: "#6BAA75",
+      orange: "#FF784F",
     },
   },
   plugins: [],
