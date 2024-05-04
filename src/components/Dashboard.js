@@ -9,12 +9,12 @@ export const REFRESH_TOKEN = "refresh_token";
 const Dashboard = () => {
   return (
     <div>
-      <Games />
       <div className="flex flex-row">
-        <div className="w-1/2">
+        <div className="w-2/3">
+          <Games />
           <Genres />
         </div>
-        <div className="w-1/2">
+        <div className="w-1/3">
           <GamePlayTime />
         </div>
       </div>

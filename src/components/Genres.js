@@ -5,8 +5,7 @@ import axios from "axios";
 const Genres = () => {
   const [genres, setGenres] = useState([]);
   const steamId = Cookies.get("steamdId");
-
-  const colors = ["text-pink", "text-yellow", "text-purple"];
+  const colors = ["bg-pink", "bg-yellow", "bg-purple", "bg-green", "bg-orange"];
 
   useEffect(() => {
     const fetchToken = async () => {
@@ -31,9 +30,13 @@ const Genres = () => {
   return (
     <div className="flex flex-col">
       <h2 className="text-white text-start font-light text-2xl">Top Genres</h2>
-      <div className="flex flex-col bg-green">
+      <div className="flex flex-row">
         {genres.map((genre, index) => (
-          <h3 className={`font-bold ${colors[index]} text-start`}>{genre}</h3>
+          <h3
+            className={`font-bold pt-2 pb-2 pl-3 pr-3 rounded-2xl mr-1 ${colors[index]}`}
+          >
+            {genre}
+          </h3>
         ))}
       </div>
     </div>

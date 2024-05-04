@@ -29,7 +29,7 @@ const Games = () => {
   return (
     <div>
       <h3 className="text-white text-start font-light text-2xl">Top Games</h3>
-      <div className="flex flex-row flex-wrap justify-start">
+      <div className="flex flex-wrap">
         {games.map((game) => (
           <div className="m-1">
             <img
