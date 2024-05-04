@@ -37,9 +37,12 @@ func GamePlayData(c *gin.Context) {
 		if game.Playtime > 0 {
 			days := game.Playtime / 1440
 
-			if days > 0 {
+			if days > 1 {
 				message = fmt.Sprintf("You have played %s for a total of %d days", game.Name, days)
+			} else if days == 1 {
+				message = fmt.Sprintf("You have played %s for a total of %d day", game.Name, days)
 			}
+
 		}
 
 		gameData = utils.GameData{
