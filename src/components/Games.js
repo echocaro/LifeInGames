@@ -1,11 +1,10 @@
 import axios from "axios";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 
 const Games = () => {
   const [games, setGames] = useState([]);
   const steamId = Cookies.get("steamdId");
-  // const isMounted = useRef(false);
 
   useEffect(() => {
     const fetchGames = async () => {
@@ -29,10 +28,8 @@ const Games = () => {
 
   return (
     <div>
-      <h3 className="text-white text-start font-light text-2xl">
-        Your top games are
-      </h3>
-      <div className="flex flex-row flex-wrap justify-center">
+      <h3 className="text-white text-start font-light text-2xl">Top Games</h3>
+      <div className="flex flex-row flex-wrap justify-start">
         {games.map((game) => (
           <div className="m-1">
             <img

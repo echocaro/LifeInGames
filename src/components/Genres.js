@@ -1,10 +1,13 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import axios from "axios";
 
 const Genres = () => {
   const [genres, setGenres] = useState([]);
   const steamId = Cookies.get("steamdId");
+
+  const colors = ["text-pink", "text-yellow", "text-purple"];
+
   useEffect(() => {
     const fetchToken = async () => {
       if (!steamId) {
@@ -27,14 +30,10 @@ const Genres = () => {
 
   return (
     <div className="flex flex-col">
-      <h2 className="text-white text-start font-light text-2xl">
-        These are some of your top played genres
-      </h2>
-      <div className="flex flex-row">
-        {genres.map((genre) => (
-          <div className="bg-pink m-1 p-10 rounded-3xl">
-            <h3 className="text-white">{genre}</h3>
-          </div>
+      <h2 className="text-white text-start font-light text-2xl">Top Genres</h2>
+      <div className="flex flex-col bg-green">
+        {genres.map((genre, index) => (
+          <h3 className={`font-bold ${colors[index]} text-start`}>{genre}</h3>
         ))}
       </div>
     </div>

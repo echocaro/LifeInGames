@@ -1,10 +1,15 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import axios from "axios";
 
 const GamePlayTime = () => {
   const [games, setGames] = useState([]);
   const steamId = Cookies.get("steamdId");
+  const colors = ["bg-pink", "bg-yellow", "bg-purple", "bg-green", "bg-orange"];
+
+  const getRandomColorIndex = () => {
+    return Math.floor(Math.random() * colors.length);
+  };
 
   useEffect(() => {
     const fetchGames = async () => {
@@ -29,11 +34,15 @@ const GamePlayTime = () => {
   return (
     <div>
       <h2 className="text-start text-white font-light text-3xl">
-        Days well spent
+        Days Well Spent 🫡
       </h2>
-      <div className="flex flex-row">
-        {games.map((game) => (
-          <div className="flex flex-col w-48 h-4/6 bg-blue m-1 p-4 rounded-2xl">
+      <div className="flex flex-row flex-wrap">
+        {games.map((game, index) => (
+          <div
+            className={`flex flex-col flex-wrap w-64 h-4/6 m-1 p-4 rounded-2xl ${
+              colors[getRandomColorIndex()]
+            }`}
+          >
             <h2 className="font-bold">{game.name}</h2>
             <h3>{game.Message}</h3>
           </div>

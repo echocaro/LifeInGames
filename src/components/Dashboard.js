@@ -10,8 +10,14 @@ const Dashboard = () => {
   return (
     <div>
       <Games />
-      <Genres />
-      <GamePlayTime />
+      <div className="flex flex-row">
+        <div className="w-1/2">
+          <Genres />
+        </div>
+        <div className="w-1/2">
+          <GamePlayTime />
+        </div>
+      </div>
     </div>
   );
 };
