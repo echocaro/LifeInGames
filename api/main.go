@@ -1,7 +1,6 @@
 package main
 
 import (
-	"api/auth"
 	"api/endpoints"
 	"time"
 
@@ -21,7 +20,6 @@ func main() {
 	}))
 
 	router.GET("/games", endpoints.OwnedGames)
-	router.POST("/token", auth.Token)
 
 	router.Run(":8080")
 }
