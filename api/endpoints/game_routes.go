@@ -28,6 +28,15 @@ type GameData struct {
 	Message string
 }
 
+type TopGenreGameInfo struct {
+	Name string `json:"name"`
+	Genre []GenreInfo
+}
+
+type GenreInfo struct {
+    Name string `json:"name"`
+}
+
 func OwnedGames(c *gin.Context) {
 	ownedGames := fetchOwnedGames(c)
 
@@ -79,12 +88,37 @@ func GetTopGames(c *gin.Context) {
 }
 
 func GetTopGenres(c *gin.Context) {
+	var games []TopGenreGameInfo
 	ownedGames := fetchOwnedGames(c)
 	topGames := topFiveGames(ownedGames)
 
-	for _, game := range topGames {
-		fetchRawgData(game)
+	if ownedGames == nil {
+		c.String(http.StatusInternalServerError, "Could not find games")
+		return
 	}
+
+	if topGames == nil {
+		c.String(http.StatusInternalServerError, "Could not find top games")
+		return
+	}
+
+	for _, game := range topGames {
+		genre, err := fetchGenreData(game)
+
+		if err != nil {
+			c.String(http.StatusInternalServerError, "Could not find game genres")
+			return
+		}
+
+		game := TopGenreGameInfo{
+			Name: game.Name,
+			Genre: genre,
+		}
+
+		games = append(games, game)
+	}
+
+	c.JSON(http.StatusOK, games)
 }
 
 func fetchOwnedGames(c *gin.Context) []GameInfo {
@@ -140,34 +174,37 @@ func fetchOwnedGames(c *gin.Context) []GameInfo {
 	return gamesResponse.Response.Games
 }
 
-func fetchRawgData(game GameInfo) {
+func fetchGenreData(game GameInfo) ([]GenreInfo, error) {
 	if err := godotenv.Load(); err != nil {
 		log.Fatalf("Error loading .env file: %s", err)
 	}
+
 	formattedName := strings.ToLower(strings.ReplaceAll(game.Name, " ", "-"))
 	formattedName = regexp.MustCompile(`[^\w-]`).ReplaceAllString(formattedName, "")
 
 	rawgUrl := fmt.Sprintf("https://api.rawg.io/api/games/%s?key=%s", formattedName, os.Getenv("RAWG_API_KEY"))
 
-	log.Println("what is url: ", rawgUrl)
-
 	response, err := http.Get(rawgUrl)
-
-	log.Println("what is response: ", response)
-
 	if err != nil {
-		return
+		return nil, err
 	}
 
 	defer response.Body.Close()
 
-	body, err := io.ReadAll(response.Body)
-
-	if err != nil {
-		log.Println("error")
+	var genres []GenreInfo
+	var rawgResponse struct {
+		Genres []GenreInfo `json:"genres"`
 	}
 
-	log.Println("what is body: ", string(body))
+	if err := json.NewDecoder(response.Body).Decode(&rawgResponse); err != nil {
+		// log.Println("error: ", err)
+		return nil, err
+	}
+
+	// log.Println("genres: ", genres)
+
+	genres = rawgResponse.Genres
+	return genres, nil
 }
 
 func topFiveGames(games []GameInfo) []GameInfo {
