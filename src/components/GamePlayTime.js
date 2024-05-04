@@ -1,11 +1,10 @@
-import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import Cookies from "js-cookie";
+import axios from "axios";
 
-const Games = () => {
+const GamePlayTime = () => {
   const [games, setGames] = useState([]);
   const steamId = Cookies.get("steamdId");
-  // const isMounted = useRef(false);
 
   useEffect(() => {
     const fetchGames = async () => {
@@ -14,7 +13,7 @@ const Games = () => {
       }
       try {
         const response = await axios.get(
-          `http://localhost:8080/${steamId}/top-games`,
+          `http://localhost:8080/${steamId}/games-data`,
           {
             steamId: steamId,
           }
@@ -29,17 +28,14 @@ const Games = () => {
 
   return (
     <div>
-      <h3 className="text-white text-start font-light text-2xl">
-        Your top games are
-      </h3>
-      <div className="flex flex-row flex-wrap justify-center">
+      <h2 className="text-start text-white font-light text-3xl">
+        Days well spent
+      </h2>
+      <div className="flex flex-row">
         {games.map((game) => (
-          <div className="m-1">
-            <img
-              src={game.ImageURL}
-              alt=""
-              className="rounded-3xl w-48 h-auto"
-            />
+          <div className="flex flex-col w-48 h-4/6 bg-blue m-1 p-4 rounded-2xl">
+            <h2 className="font-bold">{game.name}</h2>
+            <h3>{game.Message}</h3>
           </div>
         ))}
       </div>
@@ -47,4 +43,4 @@ const Games = () => {
   );
 };
 
-export default Games;
+export default GamePlayTime;

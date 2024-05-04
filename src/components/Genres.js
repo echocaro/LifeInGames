@@ -26,12 +26,17 @@ const Genres = () => {
   }, [steamId]);
 
   return (
-    <div>
-      {genres.map((genre) => (
-        <div>
-          <h3 className="text-white">{genre}</h3>
-        </div>
-      ))}
+    <div className="flex flex-col">
+      <h2 className="text-white text-start font-light text-2xl">
+        These are some of your top played genres
+      </h2>
+      <div className="flex flex-row">
+        {genres.map((genre) => (
+          <div className="bg-pink m-1 p-10 rounded-3xl">
+            <h3 className="text-white">{genre}</h3>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
