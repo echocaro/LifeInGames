@@ -5,29 +5,26 @@ import Cookies from "js-cookie";
 const Games = () => {
   const [games, setGames] = useState([]);
   const steamId = Cookies.get("steamdId");
-  const isMounted = useRef(false);
+  // const isMounted = useRef(false);
 
   useEffect(() => {
-    if (!isMounted.current) {
-      isMounted.current = true;
-      const fetchToken = async () => {
-        if (!steamId) {
-          return;
-        }
-        try {
-          const response = await axios.get(
-            `http://localhost:8080/${steamId}/top-games`,
-            {
-              steamId: steamId,
-            }
-          );
-          setGames(response?.data);
-        } catch (err) {
-          console.log(err);
-        }
-      };
-      fetchToken();
-    }
+    const fetchGames = async () => {
+      if (!steamId) {
+        return;
+      }
+      try {
+        const response = await axios.get(
+          `http://localhost:8080/${steamId}/top-games`,
+          {
+            steamId: steamId,
+          }
+        );
+        setGames(response?.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchGames();
   }, [steamId]);
 
   return (
