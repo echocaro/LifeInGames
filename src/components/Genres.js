@@ -29,7 +29,9 @@ const Genres = () => {
 
   return (
     <div className="flex flex-col">
-      <h2 className="text-white text-start font-light text-2xl">Top Genres</h2>
+      <h2 className="text-white text-start font-light text-2xl mb-1">
+        Top Genres
+      </h2>
       <div className="flex flex-row">
         {genres.map((genre, index) => (
           <h3
