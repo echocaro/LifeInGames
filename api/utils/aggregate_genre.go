@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"regexp"
+	"sort"
 	"strings"
 
 	"github.com/joho/godotenv"
@@ -40,4 +41,34 @@ func FetchGenreData(game GameInfo) ([]GenreInfo, error) {
 
 	genres = rawgResponse.Genres
 	return genres, nil
+}
+
+func CalcTopGenres(genresList []TopGenreGameInfo) [] string {
+	genreCount := make(map[string]int)
+
+	for _, gameGenre := range genresList {
+		for _, genre := range gameGenre.Genre {
+			genreCount[genre.Name]++
+		}
+	}
+
+	type genreCountPair struct {
+		Genre string
+		Count int
+	}
+	var counts []genreCountPair
+	for genre, count := range genreCount {
+		counts = append(counts, genreCountPair{Genre: genre, Count: count})
+	}
+
+	sort.Slice(counts, func(i, j int) bool {
+		return counts[i].Count > counts[j].Count
+	})
+
+	topGenres := make([]string, 0, 3)
+	for i := 0; i < 3 && i < len(counts); i++ {
+		topGenres = append(topGenres, counts[i].Genre)
+	}
+
+	return topGenres
 }
