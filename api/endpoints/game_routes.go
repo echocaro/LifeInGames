@@ -1,66 +1,75 @@
 package endpoints
 
 import (
+	"encoding/json"
+	"fmt"
 	"io"
 	"log"
 	"net/http"
 	"os"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
 
-func TopGames(c *gin.Context) {
+type GameInfo struct {
+	AppID     int    `json:"appid"`
+	Name      string `json:"name"`
+	Playtime  int    `json:"playtime_forever"`
+	ImageURL string
+}
+
+func OwnedGames(c *gin.Context) {
 	if err := godotenv.Load(); err != nil {
 		log.Fatalf("Error loading .env file: %s", err)
 	}
 
-	log.Println("what is header: ", c.GetHeader("Authorization"))
-	accessToken := c.GetHeader("Authorization")
+	steamID := c.Query("steamid")
 
-	if accessToken == "" {
-		accessToken = c.Query("access_token")
-	}
-
-	if accessToken == "" {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Access token not provided"})
+	steamAPIKey := os.Getenv("STEAM_API_KEY")
+	if steamAPIKey == "" {
+		log.Println("Steam API key not found")
+		c.String(http.StatusInternalServerError, "Steam API key not found")
 		return
 	}
 
-	log.Println("access token: ", accessToken)
+	url := fmt.Sprintf("https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key=%s&steamid=%s&include_appinfo=1", steamAPIKey, steamID)
 
-	twitchURL := "https://api.twitch.tv/helix/games/top?first=5"
+	response, err := http.Get(url)
 
-	req, err := http.NewRequest(http.MethodGet, twitchURL, nil)
-
-	log.Println("Error after creating rquest: ", err)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err })
-		return
-	}
-
-	req.Header.Add("Authorization", "Bearer " + accessToken)
-	req.Header.Add("Client-Id", os.Getenv("TWITCH_API"))
-
-	client := &http.Client{Timeout: 10 *time.Second}
-	response, newErr := client.Do(req)
-
-	log.Println("Response: ", response)
-
-	if newErr != nil {
+		log.Printf("Failed to make request: %v", err)
+		c.String(http.StatusInternalServerError, "Failed to make request to Steam Web API")
 		return
 	}
 
 	defer response.Body.Close()
 
-	responseBody, respErr := io.ReadAll(response.Body)
+	body, err := io.ReadAll(response.Body)
 
-	if respErr != nil {
-		log.Println("Failed to read response body:", err)
-		c.String(http.StatusInternalServerError, "Failed to retrieve access token")
+	if err != nil {
+		log.Printf("Failed to read response body: %v", err)
+		c.String(http.StatusInternalServerError, "Failed to read response body")
 		return
 	}
 
-	c.String(response.StatusCode, string(responseBody))
+	log.Println("Body: ", string(body))
+
+	var gamesResponse struct {
+		Response struct {
+			Games []GameInfo `json:"games"`
+		} `json:"response"`
+	}
+
+	if err := json.Unmarshal(body, &gamesResponse); err != nil {
+		log.Printf("Failed to parse JSON response: %v", err)
+		c.String(http.StatusInternalServerError, "Failed to parse JSON response")
+		return
+	}
+
+	for i := range gamesResponse.Response.Games {
+    gamesResponse.Response.Games[i].ImageURL = fmt.Sprintf("https://cdn.akamai.steamstatic.com/steam/apps/%d/header.jpg", gamesResponse.Response.Games[i].AppID)
+	}
+
+	c.JSON(http.StatusOK, gamesResponse.Response.Games)
 }

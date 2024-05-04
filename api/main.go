@@ -20,7 +20,7 @@ func main() {
 		MaxAge:           12 * time.Hour, // Preflight request cache duration
 	}))
 
-	router.GET("/games", endpoints.TopGames)
+	router.GET("/games", endpoints.OwnedGames)
 	router.POST("/token", auth.Token)
 
 	router.Run(":8080")
