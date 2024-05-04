@@ -21,6 +21,7 @@ func main() {
 
 	router.GET("/games", endpoints.OwnedGames)
 	router.GET("games-data", endpoints.GamePlayData)
+	router.GET("/top-games", endpoints.GetTopGames)
 
 	router.Run(":8080")
 }

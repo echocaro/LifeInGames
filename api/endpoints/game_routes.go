@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"sort"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -68,6 +69,13 @@ func GamePlayData(c *gin.Context) {
 	c.JSON(http.StatusOK, gameDataList)
 }
 
+func GetTopGames(c *gin.Context) {
+	ownedGames := fetchOwnedGames(c)
+	topGames := topFiveGames(ownedGames)
+
+	c.JSON(http.StatusOK, topGames)
+}
+
 
 func fetchOwnedGames(c *gin.Context) []GameInfo {
 	if err := godotenv.Load(); err != nil {
@@ -120,4 +128,27 @@ func fetchOwnedGames(c *gin.Context) []GameInfo {
 	}
 
 	return gamesResponse.Response.Games
+}
+
+// func fetchRawgData(game string) {
+// 	if err := godotenv.Load(); err != nil {
+// 		log.Fatalf("Error loading .env file: %s", err)
+// 	}
+
+// 	rawgUrl := fmt.Sprintf("https://api.rawg.io/api/games/%s?key=%s", game, os.Getenv("RAWG_API_KEY"))
+
+// 	log.Println(rawgUrl)
+// }
+
+func topFiveGames(games []GameInfo) []GameInfo {
+	maxCount := 5
+	sort.Slice(games, func(i, j int) bool {
+		return games[i].Playtime > games[j].Playtime
+	})
+
+	if len(games) > maxCount {
+		games = games[:maxCount]
+	}
+
+	return games
 }
