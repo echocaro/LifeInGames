@@ -19,9 +19,10 @@ func main() {
 		MaxAge:           12 * time.Hour, // Preflight request cache duration
 	}))
 
-	router.GET("/games", endpoints.OwnedGames)
-	router.GET("games-data", endpoints.GamePlayData)
-	router.GET("/top-games", endpoints.GetTopGames)
+	router.GET("/:steamId/games", endpoints.OwnedGames)
+	router.GET("/:steamId/games-data", endpoints.GamePlayData)
+	router.GET("/:steamId/top-games", endpoints.GetTopGames)
+	router.GET("/:steamId/top-genres", endpoints.GetTopGenres)
 
 	router.Run(":8080")
 }

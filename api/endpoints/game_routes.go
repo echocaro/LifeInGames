@@ -7,7 +7,9 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"regexp"
 	"sort"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -76,13 +78,21 @@ func GetTopGames(c *gin.Context) {
 	c.JSON(http.StatusOK, topGames)
 }
 
+func GetTopGenres(c *gin.Context) {
+	ownedGames := fetchOwnedGames(c)
+	topGames := topFiveGames(ownedGames)
+
+	for _, game := range topGames {
+		fetchRawgData(game)
+	}
+}
 
 func fetchOwnedGames(c *gin.Context) []GameInfo {
 	if err := godotenv.Load(); err != nil {
 		log.Fatalf("Error loading .env file: %s", err)
 	}
 
-	steamID := c.Query("steamid")
+	steamID := c.Param("steamId")
 
 	steamAPIKey := os.Getenv("STEAM_API_KEY")
 	if steamAPIKey == "" {
@@ -130,15 +140,35 @@ func fetchOwnedGames(c *gin.Context) []GameInfo {
 	return gamesResponse.Response.Games
 }
 
-// func fetchRawgData(game string) {
-// 	if err := godotenv.Load(); err != nil {
-// 		log.Fatalf("Error loading .env file: %s", err)
-// 	}
+func fetchRawgData(game GameInfo) {
+	if err := godotenv.Load(); err != nil {
+		log.Fatalf("Error loading .env file: %s", err)
+	}
+	formattedName := strings.ToLower(strings.ReplaceAll(game.Name, " ", "-"))
+	formattedName = regexp.MustCompile(`[^\w-]`).ReplaceAllString(formattedName, "")
 
-// 	rawgUrl := fmt.Sprintf("https://api.rawg.io/api/games/%s?key=%s", game, os.Getenv("RAWG_API_KEY"))
+	rawgUrl := fmt.Sprintf("https://api.rawg.io/api/games/%s?key=%s", formattedName, os.Getenv("RAWG_API_KEY"))
 
-// 	log.Println(rawgUrl)
-// }
+	log.Println("what is url: ", rawgUrl)
+
+	response, err := http.Get(rawgUrl)
+
+	log.Println("what is response: ", response)
+
+	if err != nil {
+		return
+	}
+
+	defer response.Body.Close()
+
+	body, err := io.ReadAll(response.Body)
+
+	if err != nil {
+		log.Println("error")
+	}
+
+	log.Println("what is body: ", string(body))
+}
 
 func topFiveGames(games []GameInfo) []GameInfo {
 	maxCount := 5
