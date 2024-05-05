@@ -76,11 +76,11 @@ const SignIn = () => {
               It simply gets stored locally in order to show your aggregate
               data!
             </p>
-            <div className="mt-5">
-              Built by
+            <div className="mt-20 -mb-16 flex justify-center">
+              Built by{" "}
               <a
                 href={"https://www.supitscaro.com"}
-                className="mt-5 text-pink font-bold"
+                className="text-pink font-bold ml-1"
               >
                 {" "}
                 Caro

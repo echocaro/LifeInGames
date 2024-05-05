@@ -3,12 +3,12 @@ module.exports = {
   content: ["./src/**/*.{html,js}"],
   theme: {
     colors: {
-      pink: "#FF5964",
-      purple: "#9893DA",
-      yellow: "#F9DB6D",
+      pink: "#FF878F",
+      purple: "#b6b3e5",
+      yellow: "#fbe9a7",
       white: "#cad3f5",
-      green: "#6BAA75",
-      orange: "#FF784F",
+      green: "#97C39E",
+      orange: "#ffae95",
     },
   },
   plugins: [],
