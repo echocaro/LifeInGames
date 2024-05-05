@@ -47,7 +47,7 @@ const SignIn = () => {
   }, [showModal, modalOpening]);
 
   return (
-    <div className="flex flex-col justify-center ml-[30%] mt-[30%]">
+    <div className="flex flex-col justify-center">
       <h3 className="text-white font-normal text-xl mb-3">
         Please enter your SteamID
         <FontAwesomeIcon

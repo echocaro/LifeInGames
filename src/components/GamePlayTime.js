@@ -29,9 +29,7 @@ const GamePlayTime = () => {
 
   return (
     <div>
-      <h2 className="text-start text-white font-light text-3xl">
-        Days Well Spent
-      </h2>
+      <h2 className="text-start text-white font-light text-2xl">Days Played</h2>
       <div className="flex flex-row flex-wrap">
         {games.map((game, index) => (
           <div
