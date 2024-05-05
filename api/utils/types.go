@@ -8,6 +8,7 @@ type GameInfo struct {
 }
 
 type GameData struct {
+	AppId int `json:"appid"`
 	Name string `json:"name"`
 	ImageUrl string
 	Message string
@@ -19,5 +20,5 @@ type TopGenreGameInfo struct {
 }
 
 type GenreInfo struct {
-    Name string `json:"name"`
+    Name string `json:"description"`
 }

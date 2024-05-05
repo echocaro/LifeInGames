@@ -2,28 +2,25 @@ package utils
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log"
 	"net/http"
-	"os"
-	"regexp"
 	"sort"
-	"strings"
+	"strconv"
 
 	"github.com/joho/godotenv"
 )
 
-func FetchGenreData(game GameInfo) ([]GenreInfo, error) {
+func FetchGenreData(gameId int) ([]GenreInfo, error) {
 	if err := godotenv.Load(); err != nil {
 		log.Fatalf("Error loading .env file: %s", err)
 	}
 
-	formattedName := strings.ToLower(strings.ReplaceAll(game.Name, " ", "-"))
-	formattedName = regexp.MustCompile(`[^\w-]`).ReplaceAllString(formattedName, "")
-
-	rawgUrl := fmt.Sprintf("https://api.rawg.io/api/games/%s?key=%s", formattedName, os.Getenv("RAWG_API_KEY"))
+	rawgUrl := fmt.Sprintf("https://store.steampowered.com/api/appdetails/?appids=%s&filters=genres", strconv.Itoa(gameId))
 
 	response, err := http.Get(rawgUrl)
+
 	if err != nil {
 		return nil, err
 	}
@@ -31,15 +28,27 @@ func FetchGenreData(game GameInfo) ([]GenreInfo, error) {
 	defer response.Body.Close()
 
 	var genres []GenreInfo
-	var rawgResponse struct {
-		Genres []GenreInfo `json:"genres"`
-	}
+	var steamResponse map[string]struct {
+        Success bool `json:"success"`
+        Data    struct {
+            Genres []GenreInfo `json:"genres"`
+        } `json:"data"`
+    }
 
-	if err := json.NewDecoder(response.Body).Decode(&rawgResponse); err != nil {
-		return nil, err
-	}
 
-	genres = rawgResponse.Genres
+	if err := json.NewDecoder(response.Body).Decode(&steamResponse); err != nil {
+        log.Println("error decoding response:", err)
+        return nil, err
+    }
+
+    // Check if the request was successful
+    if !steamResponse[strconv.Itoa(gameId)].Success {
+        log.Println("request failed")
+        return nil, errors.New("request failed")
+    }
+
+    genres = steamResponse[strconv.Itoa(gameId)].Data.Genres
+
 	return genres, nil
 }
 
