@@ -32,11 +32,7 @@ const Games = () => {
       <div className="flex flex-wrap">
         {games.map((game) => (
           <div className="m-1">
-            <img
-              src={game.ImageURL}
-              alt=""
-              className="rounded-3xl w-48 h-auto"
-            />
+            <img src={game.ImageURL} alt="" className="rounded-3xl w-56" />
           </div>
         ))}
       </div>

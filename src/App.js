@@ -5,7 +5,7 @@ import SignIn from "./components/SignIn";
 
 function App() {
   return (
-    <div className="mr-auto ml-auto w-1/3 flex h-screen justify-center items-center">
+    <div className="mr-auto ml-auto md:w-2/4 flex h-screen justify-center items-center">
       <Routes>
         <Route path="/home" element={<Dashboard />} />
         <Route path="/" element={<SignIn />} />

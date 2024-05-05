@@ -28,7 +28,7 @@ const GamePlayTime = () => {
   }, [steamId]);
 
   return (
-    <div>
+    <div className="-ml-20 -mt-12">
       <h2 className="text-start text-white font-light text-2xl">Days Played</h2>
       <div className="flex flex-row flex-wrap">
         {games.map((game, index) => (
