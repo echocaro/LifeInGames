@@ -1,6 +1,0 @@
-GET http://localhost:8080/76561199480133601/top-genres HTTP/1.1
-content-type: application/json
-
-# {
-#   "code": "mvcgg0uzqcvam7900twgwyd0vj5h6m"
-# }
