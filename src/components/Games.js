@@ -28,11 +28,13 @@ const Games = () => {
 
   return (
     <div>
-      <h3 className="text-white text-start font-light text-2xl">Top Games</h3>
-      <div className="flex flex-wrap">
+      <h3 className="text-white text-start font-light text-2xl sm:mp-50">
+        Top Games
+      </h3>
+      <div className="flex flex-col md:flex-row md:flex-wrap lg:flex-row lg:flex-wrap">
         {games.map((game) => (
-          <div className="m-1">
-            <img src={game.ImageURL} alt="" className="rounded-3xl w-56" />
+          <div className="m-1 md:w-56 ml:w-56 w-80">
+            <img src={game.ImageURL} alt="" className="rounded-3xl " />
           </div>
         ))}
       </div>

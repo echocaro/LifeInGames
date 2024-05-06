@@ -32,10 +32,10 @@ const Genres = () => {
       <h2 className="text-white text-start font-light text-2xl mb-1">
         Top Genres
       </h2>
-      <div className="flex flex-row">
+      <div className="flex flex-col md:flex-row ml:flex-row">
         {genres.map((genre, index) => (
           <div
-            className={`${colors[index]} pt-2 pb-2 pl-3 pr-3 rounded-2xl mr-1 w-52`}
+            className={`${colors[index]} mt-4 pt-5 pl-5 pb-5 pr-5 md:pt-2 lg:pt-2 md:pb-2 lg:pb-2 md:pl-3 lg:pl-3 md:pr-3 lg:pr-3 rounded-2xl sm:w-64 md:mr-1 md:w-52`}
           >
             <h2 className="font-bold text-center">{index + 1}</h2>
             <h3 className="font-regular text-center">{genre}</h3>
