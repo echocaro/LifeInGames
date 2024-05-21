@@ -6,18 +6,22 @@ const Games = () => {
   const [games, setGames] = useState([]);
   const steamId = Cookies.get("steamdId");
 
+  const PROD_URL = process.env.REACT_APP_PROD_URL;
+  const LOCAL_URL = process.env.REACT_APP_LOCAL_URL;
   useEffect(() => {
     const fetchGames = async () => {
       if (!steamId) {
         return;
       }
       try {
-        const response = await axios.get(
-          `http://localhost:8080/${steamId}/top-games`,
-          {
-            steamId: steamId,
-          }
-        );
+        console.log("what is this: ", process.env.REACT_APP_IS_PROD);
+        const url =
+          process.env.REACT_APP_IS_PROD === "false"
+            ? `http://${LOCAL_URL}/${steamId}/top-games`
+            : `https://${PROD_URL}/${steamId}/top-games`;
+        const response = await axios.get(url, {
+          steamId: steamId,
+        });
         setGames(response?.data);
       } catch (err) {
         console.log(err);

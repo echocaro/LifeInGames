@@ -7,18 +7,22 @@ const Genres = () => {
   const steamId = Cookies.get("steamdId");
   const colors = ["bg-pink", "bg-yellow", "bg-purple", "bg-green", "bg-orange"];
 
+  const PROD_URL = process.env.REACT_APP_PROD_URL;
+  const LOCAL_URL = process.env.REACT_APP_LOCAL_URL;
   useEffect(() => {
     const fetchToken = async () => {
       if (!steamId) {
         return;
       }
       try {
-        const response = await axios.get(
-          `http://localhost:8080/${steamId}/top-genres`,
-          {
-            steamId: steamId,
-          }
-        );
+        const url =
+          process.env.REACT_APP_IS_PROD === "false"
+            ? `http://${LOCAL_URL}/${steamId}/top-genres`
+            : `https://${PROD_URL}/${steamId}/top-genres`;
+
+        const response = await axios.get(url, {
+          steamId: steamId,
+        });
         setGenres(response?.data);
       } catch (err) {
         console.log(err);
