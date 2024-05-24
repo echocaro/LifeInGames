@@ -48,83 +48,46 @@ const SignIn = () => {
   }, [showModal, modalOpening]);
 
   return (
-    <div className="flex flex-col justify-center">
-      <h2 className="text-xl font-semibold mb-4 text-white">
-        Thanks for checking out my app!
-      </h2>
-      <button onClick={() => setShowHidden(!showHidden)}>
-        Click here to learn more about how this application works
-      </button>
-      <div className={`${showHidden ? "hidden" : ""}`}>
-        <p className="text-gray-700 w-64 text-center ml-5 text-white">
-          {
-            "When you enter your SteamID, it does not get stored in a database. It simply gets stored locally in order to show your aggregated data!"
-          }
-        </p>
-        <p className="text-gray-700 w-64 text-center ml-5 text-white">
-          We only use your Steam ID to fetch publicly available data such as
-          game ownership and playtime. This data is processed to display your
-          top games and gaming habits but is not stored on our servers.
-        </p>
-        <p className="text-gray-700 w-64 text-center ml-5 text-white">
-          Note: Your profile must be public for everything to work correctly
-        </p>
-        <p className="text-gray-700 w-64 text-center ml-5 text-white">
-          Data is temporarily stored in your device’s local storage to enhance
-          your user experience while you are using the app. No personal data is
-          retained after you close the session.
-        </p>
-      </div>
-      <h3 className="text-white font-normal text-xl mb-3">
-        Please enter your SteamID
-        <FontAwesomeIcon
-          icon={faQuestionCircle}
-          onClick={toggleModal}
-          className="cursor-pointer ml-5"
-        />
-      </h3>
-      <input
-        type="text"
-        title="Enter your steamdid"
-        placeholder="Example: 76561197960435530"
-        value={steamId}
-        onChange={handleInput}
-        onKeyDown={handleEnter}
-        className="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-      />
-      {/* {showModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50">
-          <div className="bg-white p-6 rounded-lg">
-            <h2 className="text-xl font-semibold mb-4">
-              Thanks for checking out my app!
-            </h2>
-            <p className="text-gray-700 w-64 text-center ml-5">
-              {
-                "When you enter your SteamID, it does not get stored in a database. It simply gets stored locally in order to show your aggregated data!"
-              }
-            </p>
-            <p className="text-gray-700 w-64 text-center ml-5">
-              Note: Your profile must be public for everything to work correctly
-            </p>
-            <div className="mt-20 -mb-16 flex justify-center">
-              Built by{" "}
-              <a
-                href={"https://www.supitscaro.com"}
-                className="text-pink font-bold ml-1"
-              >
-                {" "}
-                Caro
-              </a>
-            </div>
-            <button
-              onClick={toggleModal}
-              className="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
-            >
-              Close
-            </button>
-          </div>
+    <div className="flex flex-col w-72 mt-40 md:flex-row md:w-auto md:justify-around">
+      <div className="md:flex-col md:w-1/2">
+        <h2 className="font-bold text-center">
+          Thanks for checking out my app!
+        </h2>
+        <div className="flex-row md:flex-col text-center">
+          <p className="p-2">
+            {
+              "When you enter your SteamID, it does not get stored in a database. It simply gets stored locally in order to show your aggregated data!"
+            }
+          </p>
+          <p className="p-2">
+            We only use your Steam ID to fetch publicly available data such as
+            game ownership and playtime. This data is processed to display your
+            top games and gaming habits but is not stored on any server.
+          </p>
+          <p className="p-2">
+            Data is temporarily stored in your device’s local storage to enhance
+            your user experience while you are using the app. No personal data
+            is retained after you close the session.
+          </p>
+          <p className="p-2">
+            Note: Your profile must be public for everything to work correctly
+          </p>
         </div>
-      )} */}
+      </div>
+      <div className="flex-col">
+        <h3 className="text-center font-bold text-lg">
+          Please enter your SteamID
+        </h3>
+        <input
+          type="text"
+          title="Enter your steamdid"
+          placeholder="Example: 76561197960435530"
+          value={steamId}
+          onChange={handleInput}
+          onKeyDown={handleEnter}
+          className="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+        />
+      </div>
     </div>
   );
 };
