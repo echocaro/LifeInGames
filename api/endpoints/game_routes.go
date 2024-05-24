@@ -4,7 +4,6 @@ import (
 	externalapi "api/external_api"
 	"api/utils"
 	"fmt"
-	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -33,7 +32,7 @@ func GamePlayData(c *gin.Context) {
 	var gameList []utils.GameData
 
 	if ownedGames == nil {
-		c.String(http.StatusInternalServerError, "Could not find games")
+		c.JSON(http.StatusInternalServerError, "Could not find games")
 		return
 	}
 
@@ -84,27 +83,21 @@ func GetTopGenres(c *gin.Context) {
 	ownedGames := externalapi.FetchOwnedGames(c)
 	topGames := utils.TopSixGames(ownedGames)
 
-	log.Println("Owned games: ", ownedGames)
-	log.Println("top games: ", topGames)
-
 	if ownedGames == nil {
-		c.String(http.StatusInternalServerError, "Could not find games")
+		c.JSON(http.StatusInternalServerError, "Could not find games")
 		return
 	}
 
 	if topGames == nil {
-		c.String(http.StatusInternalServerError, "Could not find top games")
+		c.JSON(http.StatusInternalServerError, "Could not find top games")
 		return
 	}
 
 	for _, game := range topGames {
 		genre, err := utils.FetchGenreData(game.AppID)
-		log.Println("Error: ", err)
-
-		log.Println("Genre: ", genre)
 
 		if err != nil {
-			c.String(http.StatusInternalServerError, "Could not find game genres")
+			c.JSON(http.StatusInternalServerError, "Could not find game genres")
 			return
 		}
 

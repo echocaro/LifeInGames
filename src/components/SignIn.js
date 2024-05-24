@@ -72,9 +72,12 @@ const SignIn = () => {
               Thanks for checking out my app!
             </h2>
             <p className="text-gray-700 w-64 text-center ml-5">
-              When you enter your SteamID, it does not get stored in a database.
-              It simply gets stored locally in order to show your aggregate
-              data!
+              {
+                "When you enter your SteamID, it does not get stored in a database. It simply gets stored locally in order to show your aggregated data!"
+              }
+            </p>
+            <p className="text-gray-700 w-64 text-center ml-5">
+              Note: Your profile must be public for everything to work correctly
             </p>
             <div className="mt-20 -mb-16 flex justify-center">
               Built by{" "}
