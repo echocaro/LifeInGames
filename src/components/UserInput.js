@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
 
-const SignIn = () => {
+const UserInput = () => {
   const navigate = useNavigate();
   const [showHidden, setShowHidden] = useState(false);
   const [steamId, setSteamId] = useState("");
@@ -92,4 +92,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default UserInput;
