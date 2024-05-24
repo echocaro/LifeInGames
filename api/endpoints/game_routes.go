@@ -10,6 +10,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func HealthCheck(c *gin.Context) {
+	c.JSON(http.StatusOK, "Running 🚀")
+}
+
 func OwnedGames(c *gin.Context) {
 	ownedGames := externalapi.FetchOwnedGames(c)
 

@@ -19,9 +19,13 @@ const Games = () => {
           process.env.REACT_APP_IS_PROD === "false"
             ? `http://${LOCAL_URL}/${steamId}/top-games`
             : `https://${PROD_URL}/${steamId}/top-games`;
+
         const response = await axios.get(url, {
-          steamId: steamId,
+          headers: {
+            "Content-Type": "application/json",
+          },
         });
+
         setGames(response?.data);
       } catch (err) {
         console.log(err);

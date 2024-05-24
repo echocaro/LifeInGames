@@ -21,8 +21,11 @@ const Genres = () => {
             : `https://${PROD_URL}/${steamId}/top-genres`;
 
         const response = await axios.get(url, {
-          steamId: steamId,
+          headers: {
+            "Content-Type": "application/json",
+          },
         });
+
         setGenres(response?.data);
       } catch (err) {
         console.log(err);
