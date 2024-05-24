@@ -3,6 +3,7 @@ package endpoints
 import (
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/yohcop/openid-go"
@@ -34,6 +35,8 @@ func Callback(c *gin.Context) {
 		c.JSON(http.StatusForbidden, "Could not verify your steam account")
 	}
 
-	log.Println("ID")
-	log.Println(id)
+	parts := strings.Split(id, "/")
+	steamId := parts[len(parts)-1]
+
+	c.JSON(http.StatusOK, steamId)
 }
