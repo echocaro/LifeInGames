@@ -6,6 +6,7 @@ import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
 
 const SignIn = () => {
   const navigate = useNavigate();
+  const [showHidden, setShowHidden] = useState(false);
   const [steamId, setSteamId] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [modalOpening, setModalOpening] = useState(false);
@@ -48,6 +49,32 @@ const SignIn = () => {
 
   return (
     <div className="flex flex-col justify-center">
+      <h2 className="text-xl font-semibold mb-4 text-white">
+        Thanks for checking out my app!
+      </h2>
+      <button onClick={() => setShowHidden(!showHidden)}>
+        Click here to learn more about how this application works
+      </button>
+      <div className={`${showHidden ? "hidden" : ""}`}>
+        <p className="text-gray-700 w-64 text-center ml-5 text-white">
+          {
+            "When you enter your SteamID, it does not get stored in a database. It simply gets stored locally in order to show your aggregated data!"
+          }
+        </p>
+        <p className="text-gray-700 w-64 text-center ml-5 text-white">
+          We only use your Steam ID to fetch publicly available data such as
+          game ownership and playtime. This data is processed to display your
+          top games and gaming habits but is not stored on our servers.
+        </p>
+        <p className="text-gray-700 w-64 text-center ml-5 text-white">
+          Note: Your profile must be public for everything to work correctly
+        </p>
+        <p className="text-gray-700 w-64 text-center ml-5 text-white">
+          Data is temporarily stored in your device’s local storage to enhance
+          your user experience while you are using the app. No personal data is
+          retained after you close the session.
+        </p>
+      </div>
       <h3 className="text-white font-normal text-xl mb-3">
         Please enter your SteamID
         <FontAwesomeIcon
@@ -65,7 +92,7 @@ const SignIn = () => {
         onKeyDown={handleEnter}
         className="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
       />
-      {showModal && (
+      {/* {showModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50">
           <div className="bg-white p-6 rounded-lg">
             <h2 className="text-xl font-semibold mb-4">
@@ -97,7 +124,7 @@ const SignIn = () => {
             </button>
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 };
