@@ -20,6 +20,8 @@ func main() {
 	}))
 
 	router.GET("/", endpoints.HealthCheck)
+	router.GET("/login", endpoints.Login)
+	router.GET("/callback", endpoints.Callback)
 	router.GET("/:steamId/games", endpoints.OwnedGames)
 	router.GET("/:steamId/games-data", endpoints.GamePlayData)
 	router.GET("/:steamId/top-games", endpoints.GetTopGames)
