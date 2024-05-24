@@ -2,7 +2,6 @@ package main
 
 import (
 	"api/endpoints"
-	"net/http"
 	"time"
 
 	"github.com/gin-contrib/cors"
@@ -19,13 +18,6 @@ func main() {
 			AllowCredentials: true,
 			MaxAge:           12 * time.Hour,
 	}))
-
-
-	router.OPTIONS("/*any", func(c *gin.Context) {
-			c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
-			c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, Access-Control-Allow-Origin")
-			c.Status(http.StatusOK)
-	})
 
 	router.GET("/", endpoints.HealthCheck)
 	router.GET("/:steamId/games", endpoints.OwnedGames)
