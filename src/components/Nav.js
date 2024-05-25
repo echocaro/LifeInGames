@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 const Nav = () => {
   const navigate = useNavigate();
   const steamId = Cookies.get("steamId");
-  console.log("steam?? ", steamId);
 
   const handleSignOut = () => {
     Cookies.remove("steamId");

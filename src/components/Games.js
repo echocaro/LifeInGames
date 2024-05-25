@@ -14,7 +14,6 @@ const Games = () => {
         return;
       }
       try {
-        console.log("what is this: ", process.env.REACT_APP_IS_PROD);
         const url =
           process.env.REACT_APP_IS_PROD === "false"
             ? `http://${LOCAL_URL}/${steamId}/top-games`

@@ -3,9 +3,11 @@ package endpoints
 import (
 	"log"
 	"net/http"
+	"os"
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 	"github.com/yohcop/openid-go"
 )
 
@@ -13,12 +15,15 @@ var nonceStore = openid.NewSimpleNonceStore()
 var discoveryCache = openid.NewSimpleDiscoveryCache()
 
 func Login(c *gin.Context) {
+	if err := godotenv.Load(); err != nil {
+		log.Fatalf("Error loading .env file: %s", err)
+	}
+
 	openidURL := "https://steamcommunity.com/openid"
 
-	returnTo := "http://localhost:8080/callback"
-	realm := "http://localhost:8080/"
+	apiUrl := os.Getenv("BASE_API_URL_PROD")
 
-	url, err := openid.RedirectURL(openidURL, returnTo, realm)
+	url, err := openid.RedirectURL(openidURL, apiUrl+"callback", apiUrl)
 	if err != nil {
 		log.Println("Error when redirecting to Steam login:", err)
 		c.AbortWithError(http.StatusInternalServerError, err)
@@ -28,7 +33,14 @@ func Login(c *gin.Context) {
 }
 
 func Callback(c *gin.Context) {
-	fullUrl := "http://localhost:8080" + c.Request.RequestURI
+	if err := godotenv.Load(); err != nil {
+		log.Fatalf("Error loading .env file: %s", err)
+	}
+
+	apiUrl := os.Getenv("API_URL_PROD")
+	webApi := os.Getenv("WEB_URL_PROD")
+
+	fullUrl := apiUrl + c.Request.RequestURI
 
 	id, err := openid.Verify(fullUrl, discoveryCache, nonceStore)
 	if err != nil {
@@ -38,6 +50,5 @@ func Callback(c *gin.Context) {
 	parts := strings.Split(id, "/")
 	steamId := parts[len(parts)-1]
 
-	frontendURL := "http://localhost:3000/"
-	c.Redirect(http.StatusFound, frontendURL+"steamId="+steamId)
+	c.Redirect(http.StatusFound, webApi+"?steamId="+steamId)
 }
