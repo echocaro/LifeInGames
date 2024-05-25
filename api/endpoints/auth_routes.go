@@ -38,5 +38,6 @@ func Callback(c *gin.Context) {
 	parts := strings.Split(id, "/")
 	steamId := parts[len(parts)-1]
 
-	c.JSON(http.StatusOK, steamId)
+	frontendURL := "http://localhost:3000/"
+	c.Redirect(http.StatusFound, frontendURL+"steamId="+steamId)
 }
