@@ -26,9 +26,7 @@ const Nav = () => {
       </div>
       <h4
         onClick={handleSignOut}
-        className={`${
-          !steamId ?? "hidden"
-        } text-xl font-regular cursor-pointer`}
+        className={`${steamId ?? "hidden"} text-xl font-regular cursor-pointer`}
       >
         Sign Out
       </h4>
