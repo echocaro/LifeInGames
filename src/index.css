@@ -3,11 +3,8 @@
 @tailwind utilities;
 
 @layer base {
-  p {
-    @apply text-white;
-  }
-  h2,
-  h3 {
+  p,
+  h4 {
     @apply text-white;
   }
 }

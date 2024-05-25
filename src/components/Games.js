@@ -41,7 +41,7 @@ const Games = () => {
       </h3>
       <div className="flex flex-col md:flex-row md:flex-wrap lg:flex-row lg:flex-wrap">
         {games.map((game) => (
-          <div className="m-1 md:w-56 ml:w-56 w-80">
+          <div className="m-1 md:w-64 ml:w-56">
             <img src={game.ImageURL} alt="" className="rounded-3xl " />
           </div>
         ))}

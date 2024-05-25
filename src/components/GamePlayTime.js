@@ -36,15 +36,15 @@ const GamePlayTime = () => {
   }, [steamId]);
 
   return (
-    <div className="-ml-20 md:-mt-28">
-      <h2 className="text-start text-white font-light text-2xl">Days Played</h2>
-      <div className="flex flex-row flex-wrap">
+    <div className="flex flex-col">
+      <h3 className="text-white text-start font-light text-2xl sm:mp-50">
+        Days Played
+      </h3>
+      <div className="flex flex-col w-auto md:flex-row md:flex-wrap">
         {games.map((game, index) => (
-          <div
-            className={`flex flex-col flex-wrap w-64 h-4/6 m-1 p-4 rounded-2xl ${colors[index]}`}
-          >
+          <div className={`m-1 p-4 rounded-2xl ${colors[index]}`}>
             <h2 className="font-bold">{game.name}</h2>
-            <h3>{game.Message}</h3>
+            <h3 className="">{game.Message}</h3>
           </div>
         ))}
       </div>

@@ -7,7 +7,6 @@ const UserInput = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Function to parse query parameters
   const getQueryParams = (query) => {
     return new URLSearchParams(query);
   };
@@ -18,16 +17,16 @@ const UserInput = () => {
 
     if (steamId) {
       Cookies.set("steamId", steamId, { expires: 1 });
-      navigate("/home");
+      navigate("/dashboard");
     }
   }, [location, navigate]);
 
   return (
-    <div className="flex flex-col w-72 mt-40 md:flex-row md:w-auto md:justify-around">
+    <div className="flex flex-col w-72 mt-24 md:-mt-24 md:flex-row md:w-auto md:justify-around">
       <div className="md:flex-col md:w-1/2">
-        <h2 className="font-bold text-center">
+        <h4 className="font-bold text-center">
           Thanks for checking out my app!
-        </h2>
+        </h4>
         <div className="flex-row md:flex-col text-center">
           <p className="p-2">
             {
@@ -50,9 +49,9 @@ const UserInput = () => {
         </div>
       </div>
       <div className="flex-col">
-        <h3 className="text-center font-bold text-lg">
+        <h4 className="text-center font-bold text-lg">
           Sign in with your Steam account:
-        </h3>
+        </h4>
         <button>
           <a href="http://localhost:8080/login">
             <img src={BtnImage} alt="" />
