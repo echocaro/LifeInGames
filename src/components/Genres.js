@@ -4,7 +4,7 @@ import axios from "axios";
 
 const Genres = () => {
   const [genres, setGenres] = useState([]);
-  const steamId = Cookies.get("steamdId");
+  const steamId = Cookies.get("steamId");
   const colors = ["bg-pink", "bg-yellow", "bg-purple", "bg-green", "bg-orange"];
 
   const PROD_URL = process.env.REACT_APP_PROD_URL;

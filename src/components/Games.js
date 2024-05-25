@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 
 const Games = () => {
   const [games, setGames] = useState([]);
-  const steamId = Cookies.get("steamdId");
+  const steamId = Cookies.get("steamId");
 
   const PROD_URL = process.env.REACT_APP_PROD_URL;
   const LOCAL_URL = process.env.REACT_APP_LOCAL_URL;

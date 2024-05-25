@@ -1,51 +1,26 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
+import BtnImage from "../assets/signin-btn.png";
 
 const UserInput = () => {
   const navigate = useNavigate();
-  const [showHidden, setShowHidden] = useState(false);
-  const [steamId, setSteamId] = useState("");
-  const [showModal, setShowModal] = useState(false);
-  const [modalOpening, setModalOpening] = useState(false);
+  const location = useLocation();
 
-  const handleInput = (e) => {
-    setSteamId(e.target.value);
+  // Function to parse query parameters
+  const getQueryParams = (query) => {
+    return new URLSearchParams(query);
   };
 
-  const handleEnter = (e) => {
-    if (e.key === "Enter") {
-      Cookies.set("steamdId", steamId, { expires: 1 });
+  useEffect(() => {
+    const queryParams = getQueryParams(location.search);
+    const steamId = queryParams.get("steamId");
+
+    if (steamId) {
+      Cookies.set("steamId", steamId, { expires: 1 });
       navigate("/home");
     }
-  };
-
-  const toggleModal = () => {
-    setModalOpening(true); // Signal that modal is being opened
-    setShowModal(!showModal);
-  };
-
-  const closeModal = () => {
-    setShowModal(false);
-  };
-
-  const handleDocumentClick = (e) => {
-    if (!modalOpening && showModal && !e.target.closest(".modal-content")) {
-      closeModal();
-    }
-    setModalOpening(false); // Reset modalOpening state after modal has opened/closed
-  };
-
-  // Add event listener when component mounts
-  React.useEffect(() => {
-    document.addEventListener("click", handleDocumentClick);
-    // Remove event listener when component unmounts
-    return () => {
-      document.removeEventListener("click", handleDocumentClick);
-    };
-  }, [showModal, modalOpening]);
+  }, [location, navigate]);
 
   return (
     <div className="flex flex-col w-72 mt-40 md:flex-row md:w-auto md:justify-around">
@@ -76,17 +51,13 @@ const UserInput = () => {
       </div>
       <div className="flex-col">
         <h3 className="text-center font-bold text-lg">
-          Please enter your SteamID
+          Sign in with your Steam account:
         </h3>
-        <input
-          type="text"
-          title="Enter your steamdid"
-          placeholder="Example: 76561197960435530"
-          value={steamId}
-          onChange={handleInput}
-          onKeyDown={handleEnter}
-          className="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-        />
+        <button>
+          <a href="http://localhost:8080/login">
+            <img src={BtnImage} alt="" />
+          </a>
+        </button>
       </div>
     </div>
   );
